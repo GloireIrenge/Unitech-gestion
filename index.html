@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>UNITECH – Système de Gestion Académique</title>
+  <link rel="stylesheet" href="assets/vendors/typicons/typicons.css">
+  <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="shortcut icon" href="assets/images/favicon.ico" />
+  <style>
+    :root {
+      --unitech-blue: #5d8cf4;
+      --unitech-blue-dark: #1d3968;
+      --unitech-yellow: #f4dc61;
+      --unitech-navy: #112a50;
+      --unitech-bg: #f2f6ff;
+      --unitech-card: #ffffff;
+      --unitech-border: rgba(28, 55, 99, 0.12);
+      --unitech-text: #1e2a3b;
+      --unitech-muted: #66758c;
+      --unitech-success: #2fbf71;
+      --unitech-warning: #f5b642;
+      --unitech-danger: #ec5b5b;
+    }
+
+    body {
+      background: var(--unitech-bg);
+      color: var(--unitech-text);
+      font-family: "Poppins", sans-serif;
+    }
+    .container-scroller { min-height: 100vh; }
+    .navbar {
+      background: linear-gradient(135deg, var(--unitech-blue-dark) 0%, var(--unitech-navy) 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 12px 32px rgba(17,42,80,0.12);
+    }
+    .nav-user-status p, .navbar .dropdown-item, .navbar .preview-item-content p, .navbar .preview-subject, .navbar .dropdown-header { font-size: 0.78rem; }
+    .sidebar { background: rgba(255,255,255,0.8); border-right: 1px solid var(--unitech-border); backdrop-filter: blur(12px); }
+    .sidebar .nav-item { margin: 0.2rem 0; }
+    .sidebar .nav-link {
+      border-radius: 12px; margin: 0 0.65rem; padding: 0.8rem 0.9rem; font-weight: 500; transition: 0.2s ease;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active { background: rgba(93, 140, 244, 0.12); color: var(--unitech-blue-dark); }
+    .page-body-wrapper { padding-top: 72px; }
+    .content-wrapper { padding: 1.5rem 1.4rem 0; }
+    .page-header {
+      padding: 1.1rem 1.4rem; margin-bottom: 1.4rem; border-radius: 18px; display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(135deg, rgba(93,140,244,0.12), rgba(244,220,97,0.18)); border: 1px solid rgba(93,140,244,0.14); box-shadow: 0 8px 20px rgba(17,42,80,0.06);
+    }
+    .eyebrow { margin: 0 0 0.5rem; color: var(--unitech-blue-dark); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .page-header h1 { margin: 0; font-size: clamp(1.6rem, 2vw, 2.1rem); font-weight: 700; color: var(--unitech-blue-dark); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--unitech-blue) 0%, var(--unitech-blue-dark) 100%); border: none; border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(93, 140, 244, 0.18);
+    }
+    .university-card, .metric-card {
+      border: 1px solid var(--unitech-border); border-radius: 18px; box-shadow: 0 10px 28px rgba(17,42,80,0.05); background: var(--unitech-card);
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem 0.5rem; background: transparent; border-bottom: none;
+    }
+    .card-header h4 { margin: 0; font-size: 1.06rem; font-weight: 700; color: var(--unitech-blue-dark); }
+    .chip {
+      display: inline-flex; padding: 0.35rem 0.7rem; border-radius: 999px; background: rgba(93, 140, 244, 0.12); color: var(--unitech-blue-dark);
+      font-size: 0.72rem; font-weight: 700;
+    }
+    .chip.muted { background: rgba(17,42,80,0.06); color: var(--unitech-text); }
+    .chip.accent { background: rgba(244,220,97,0.2); color: #7a6200; }
+    .student-card { position: relative; overflow: hidden; }
+    .student-card::before {
+      content: ""; position: absolute; inset: 0 0 auto auto; width: 180px; height: 180px; background: radial-gradient(circle, rgba(93,140,244,0.13), transparent 65%);
+    }
+    .student-avatar { width: 86px; height: 86px; border-radius: 22px; object-fit: cover; border: 3px solid rgba(93,140,244,0.18); }
+    .status-badge {
+      display: inline-block; margin-bottom: 0.45rem; padding: 0.35rem 0.7rem; border-radius: 999px; background: rgba(47,191,113,0.12);
+      color: var(--unitech-success); font-size: 0.72rem; font-weight: 700;
+    }
+    .student-card h3 { margin: 0; font-size: 1.6rem; font-weight: 700; }
+    .student-card p { margin: 0.3rem 0 0; color: var(--unitech-muted); font-weight: 500; }
+    .student-meta { display: grid; gap: 0.7rem; margin-top: 1.1rem; }
+    .student-meta div { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.55rem; border-bottom: 1px solid rgba(17,42,80,0.08); }
+    .student-meta span { color: var(--unitech-muted); font-size: 0.8rem; }
+    .student-meta strong { font-size: 0.9rem; text-align: right; }
+    .metric-card .card-body { padding: 1.2rem 1rem; }
+    .metric-label { margin: 0; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--unitech-muted); }
+    .metric-card h3 { margin: 0.4rem 0 0.1rem; font-size: 1.9rem; font-weight: 800; color: var(--unitech-blue-dark); }
+    .metric-card small { display: inline-block; font-size: 0.72rem; font-weight: 600; }
+    .metric-card small.up { color: var(--unitech-success); }
+    .metric-card small.neutral { color: var(--unitech-muted); }
+    .table { margin: 0; color: var(--unitech-text); }
+    .table thead th {
+      background: rgba(93, 140, 244, 0.04); color: var(--unitech-blue-dark); font-size: 0.77rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; border-bottom: 1px solid var(--unitech-border);
+    }
+    .table td { padding: 0.9rem 1rem; font-size: 0.9rem; vertical-align: middle; border-color: rgba(17,42,80,0.08); }
+    .status-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 76px; padding: 0.32rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+    .status-pill.ok { background: rgba(47,191,113,0.12); color: var(--unitech-success); }
+    .status-pill.pending { background: rgba(245,182,66,0.12); color: var(--unitech-warning); }
+    .agenda-list, .notice-list, .request-list, .schedule-list, .mini-list { list-style: none; margin: 0; padding: 0; }
+    .agenda-list li, .notice-list li, .request-list li { display: flex; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid rgba(17,42,80,0.08); }
+    .agenda-list li:last-child, .notice-list li:last-child, .request-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .agenda-time {
+      display: inline-flex; min-width: 60px; padding: 0.4rem 0.5rem; border-radius: 10px; background: rgba(93,140,244,0.08); color: var(--unitech-blue-dark);
+      font-weight: 700; font-size: 0.78rem; align-items: center; justify-content: center;
+    }
+    .agenda-list p, .notice-list p, .request-list p { margin: 0.2rem 0 0; color: var(--unitech-muted); font-size: 0.8rem; }
+    .notice-tag {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 90px; height: 30px; border-radius: 999px; background: rgba(93,140,244,0.08); color: var(--unitech-blue-dark); font-size: 0.7rem; font-weight: 700;
+    }
+    .notice-tag.urgent { background: rgba(236,91,91,0.12); color: var(--unitech-danger); }
+    .course-list { display: grid; gap: 1rem; }
+    .course-item { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid rgba(17,42,80,0.08); }
+    .course-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .course-item p { margin: 0.25rem 0 0; color: var(--unitech-muted); font-size: 0.8rem; }
+    .course-item a { color: var(--unitech-blue-dark); font-weight: 700; white-space: nowrap; }
+    .finance-summary { display: grid; gap: 0.9rem; margin-bottom: 1rem; }
+    .finance-summary div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.8rem 0.95rem; background: rgba(93,140,244,0.04); border-radius: 12px; border: 1px solid rgba(93,140,244,0.08); }
+    .finance-summary span, .mini-list span { color: var(--unitech-muted); font-size: 0.78rem; }
+    .progress-label { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.8rem; color: var(--unitech-muted); }
+    .progress { height: 10px; background: rgba(93,140,244,0.08); border-radius: 999px; }
+    .progress-bar { background: linear-gradient(135deg, var(--unitech-blue) 0%, var(--unitech-yellow) 100%); border-radius: 999px; }
+    .mini-list { display: grid; gap: 0.7rem; margin-top: 1rem; }
+    .mini-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0.2rem; border-bottom: 1px solid rgba(17,42,80,0.08); }
+    .schedule-list { display: grid; gap: 0.8rem; }
+    .schedule-list li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.8rem 0.9rem; background: rgba(93,140,244,0.03); border: 1px solid rgba(93,140,244,0.08); border-radius: 12px; }
+    .schedule-list span { min-width: 72px; font-weight: 700; color: var(--unitech-blue-dark); }
+    .schedule-list em { color: var(--unitech-muted); font-style: normal; font-size: 0.8rem; }
+    .request-list li { align-items: flex-start; justify-content: space-between; }
+    .request-list .status-pill { margin-top: 0.3rem; white-space: nowrap; }
+    .footer { padding: 0 1.4rem 1.3rem; }
+    .footer .card { border: none; border-radius: 16px; box-shadow: none; background: transparent; }
+    @media (max-width: 991.98px) {
+      .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .student-meta div { flex-direction: column; align-items: flex-start; }
+      .student-meta strong { text-align: left; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand brand-logo" href="index.html"><img src="assets/images/logo.jpg" alt="logo UNITECH" /></a>
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo.jpg" alt="logo mini UNITECH" /></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="typcn typcn-th-menu"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav me-lg-2">
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link" href="#" data-bs-toggle="dropdown" id="profileDropdown">
+              <img src="assets/images/faces/face5.jpg" alt="profile" />
+              <span class="nav-profile-name">Amélie Ndayisaba</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item"><i class="typcn typcn-cog-outline text-primary"></i> Paramètres</a>
+              <a class="dropdown-item"><i class="typcn typcn-eject text-primary"></i> Déconnexion</a>
+            </div>
+          </li>
+          <li class="nav-item nav-user-status dropdown">
+            <p class="mb-0">Dernière connexion il y a 3 heures.</p>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-date dropdown">
+            <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
+              <h6 class="date mb-0">Aujourd'hui : 14 Oct 2026</h6>
+              <i class="typcn typcn-calendar"></i>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-bs-toggle="dropdown">
+              <i class="typcn typcn-mail mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+              <p class="mb-0 fw-normal float-start dropdown-header">Messages</p>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail"><img src="assets/images/faces/face4.jpg" alt="image" class="profile-pic" /></div>
+                <div class="preview-item-content flex-grow">
+                  <h6 class="preview-subject ellipsis fw-normal">M. Kabore</h6>
+                  <p class="fw-light small-text text-muted mb-0">L'inscription est validée.</p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail"><img src="assets/images/faces/face2.jpg" alt="image" class="profile-pic" /></div>
+                <div class="preview-item-content flex-grow">
+                  <h6 class="preview-subject ellipsis fw-normal">Dr. Koffi</h6>
+                  <p class="fw-light small-text text-muted mb-0">Nouveau dépôt de syllabus.</p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail"><img src="assets/images/faces/face3.jpg" alt="image" class="profile-pic" /></div>
+                <div class="preview-item-content flex-grow">
+                  <h6 class="preview-subject ellipsis fw-normal">Secrétariat</h6>
+                  <p class="fw-light small-text text-muted mb-0">Rendez-vous correction des notes.</p>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown me-0">
+            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+              <i class="typcn typcn-bell mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <p class="mb-0 fw-normal float-start dropdown-header">Notifications</p>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail"><div class="preview-icon bg-success"><i class="typcn typcn-info mx-0"></i></div></div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject fw-normal">Paiement reçu</h6>
+                  <p class="fw-light small-text mb-0 text-muted">À l'instant</p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail"><div class="preview-icon bg-warning"><i class="typcn typcn-cog-outline mx-0"></i></div></div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject fw-normal">Mise à jour de l'emploi du temps</h6>
+                  <p class="fw-light small-text mb-0 text-muted">Aujourd'hui</p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail"><div class="preview-icon bg-info"><i class="typcn typcn-user mx-0"></i></div></div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject fw-normal">Nouvelle annonce</h6>
+                  <p class="fw-light small-text mb-0 text-muted">2 jours</p>
+                </div>
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="typcn typcn-th-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item"><a class="nav-link" href="index.html"><i class="typcn typcn-device-desktop menu-icon"></i><span class="menu-title">Tableau de bord</span><div class="badge badge-danger">new</div></a></li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#student" aria-expanded="true" aria-controls="student"><i class="typcn typcn-user menu-icon"></i><span class="menu-title">Espace étudiant</span><i class="menu-arrow"></i></a>
+            <div class="collapse show" id="student">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="#profil">Profil</a></li>
+                <li class="nav-item"><a class="nav-link" href="#resultats">Résultats</a></li>
+                <li class="nav-item"><a class="nav-link" href="#cours">Cours</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#academic" aria-expanded="false" aria-controls="academic"><i class="typcn typcn-book menu-icon"></i><span class="menu-title">Académique</span><i class="menu-arrow"></i></a>
+            <div class="collapse" id="academic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="#programme">Programme</a></li>
+                <li class="nav-item"><a class="nav-link" href="#horaires">Horaires</a></li>
+                <li class="nav-item"><a class="nav-link" href="#documents">Documents</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#finance" aria-expanded="false" aria-controls="finance"><i class="typcn typcn-credit-card menu-icon"></i><span class="menu-title">Paiements</span><i class="menu-arrow"></i></a>
+            <div class="collapse" id="finance">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="#finances">Situation financière</a></li>
+                <li class="nav-item"><a class="nav-link" href="#echeances">Échéances</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#communications"><i class="typcn typcn-messages menu-icon"></i><span class="menu-title">Communiqués</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="#recours"><i class="typcn typcn-clipboard menu-icon"></i><span class="menu-title">Recours</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="docs/documentation.html"><i class="typcn typcn-mortar-board menu-icon"></i><span class="menu-title">Documentation</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Université Internationale des Nouvelles Technologies</p>
+              <h1>UNITECH – Système de Gestion Académique</h1>
+            </div>
+            <div class="d-flex gap-2">
+              <a class="btn btn-primary btn-sm" href="pages/samples/admin-dashboard.html">+ Administration</a>
+              <a class="btn btn-outline-primary btn-sm" href="pages/samples/login.html">Connexion</a>
+            </div>
+          </div>
+
+          <section id="profil" class="row g-4 mb-4">
+            <div class="col-xl-4">
+              <div class="card university-card student-card h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <img class="student-avatar" src="assets/images/faces/face5.jpg" alt="photo étudiante" />
+                    <div class="ms-3">
+                      <span class="status-badge">Étudiant actif</span>
+                      <h3>Amélie Ndayisaba</h3>
+                      <p>Matricule : UNT-2024-0837</p>
+                    </div>
+                  </div>
+                  <div class="student-meta mt-3">
+                    <div><span>Faculté</span><strong>Sciences de l'information</strong></div>
+                    <div><span>Département</span><strong>Informatique</strong></div>
+                    <div><span>Promotion</span><strong>2024-2028</strong></div>
+                    <div><span>Classe</span><strong>L3 - SIA</strong></div>
+                    <div><span>Année académique</span><strong>2026-2027</strong></div>
+                    <div><span>Inscription</span><strong>Validée</strong></div>
+                    <div><span>Paiement</span><strong>À jour</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-8">
+              <div class="row g-4">
+                <div class="col-md-6 col-xl-3">
+                  <div class="card metric-card h-100">
+                    <div class="card-body">
+                      <p class="metric-label">Moyenne générale</p>
+                      <h3>15,84</h3>
+                      <small class="up">+0,41 depuis le semestre précédent</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="card metric-card h-100">
+                    <div class="card-body">
+                      <p class="metric-label">Crédits validés</p>
+                      <h3>96</h3>
+                      <small class="up">12 crédits à compléter</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="card metric-card h-100">
+                    <div class="card-body">
+                      <p class="metric-label">Cours suivis</p>
+                      <h3>08</h3>
+                      <small class="neutral">2 activités de projet</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="card metric-card h-100">
+                    <div class="card-body">
+                      <p class="metric-label">Solde financier</p>
+                      <h3>120 000</h3>
+                      <small class="neutral">FCFA restant</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="resultats" class="row g-4 mb-4">
+            <div class="col-xl-7">
+              <div class="card university-card h-100">
+                <div class="card-header">
+                  <h4>Derniers résultats publiés</h4>
+                  <span class="chip">Semestre 1</span>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                      <thead>
+                        <tr>
+                          <th>Cours</th>
+                          <th>Évaluation</th>
+                          <th>Note</th>
+                          <th>Crédits</th>
+                          <th>Statut</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Algorithmique avancée</td>
+                          <td>Examen final</td>
+                          <td>16,5</td>
+                          <td>6</td>
+                          <td><span class="status-pill ok">Validé</span></td>
+                        </tr>
+                        <tr>
+                          <td>Base de données</td>
+                          <td>TP + projet</td>
+                          <td>15,0</td>
+                          <td>5</td>
+                          <td><span class="status-pill ok">Validé</span></td>
+                        </tr>
+                        <tr>
+                          <td>Réseaux</td>
+                          <td>Interrogation</td>
+                          <td>14,8</td>
+                          <td>4</td>
+                          <td><span class="status-pill ok">Validé</span></td>
+                        </tr>
+                        <tr>
+                          <td>Anglais professionnel</td>
+                          <td>Contrôle continu</td>
+                          <td>17,2</td>
+                          <td>3</td>
+                          <td><span class="status-pill ok">Validé</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-5">
+              <div class="card university-card h-100">
+                <div class="card-header">
+                  <h4>Prochains cours</h4>
+                  <span class="chip muted">Semaine 09</span>
+                </div>
+                <div class="card-body">
+                  <ul class="agenda-list">
+                    <li>
+                      <div class="agenda-time">08:30</div>
+                      <div>
+                        <strong>Algorithmique avancée</strong>
+                        <p>Dr. Koffi • Salle A12</p>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="agenda-time">10:15</div>
+                      <div>
+                        <strong>Base de données</strong>
+                        <p>Pr. N’Guessan • Salle B04</p>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="agenda-time">13:00</div>
+                      <div>
+                        <strong>Management de projet</strong>
+                        <p>Dr. Diallo • Amphi 3</p>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="agenda-time">15:30</div>
+                      <div>
+                        <strong>Anglais professionnel</strong>
+                        <p>Pr. Soro • Salle C08</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="cours" class="row g-4 mb-4">
+            <div class="col-xl-6">
+              <div class="card university-card h-100">
+                <div class="card-header">
+                  <h4>Cours et syllabus</h4>
+                  <span class="chip">Programme</span>
+                </div>
+                <div class="card-body">
+                  <div class="course-list">
+                    <div class="course-item">
+                      <div>
+                        <strong>INF-2401 • Base de données</strong>
+                        <p>Professeur : Pr. N’Guessan • 45h • 5 crédits</p>
+                      </div>
+                      <a href="#">Syllabus PDF</a>
+                    </div>
+                    <div class="course-item">
+                      <div>
+                        <strong>INF-2402 • Réseaux</strong>
+                        <p>Professeur : Dr. Koffi • 36h • 4 crédits</p>
+                      </div>
+                      <a href="#">Supports</a>
+                    </div>
+                    <div class="course-item">
+                      <div>
+                        <strong>INF-2405 • Développement web</strong>
+                        <p>Professeur : Pr. Mensah • 60h • 6 crédits</p>
+                      </div>
+                      <a href="#">Supports</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6" id="communications">
+              <div class="card university-card h-100">
+                <div class="card-header">
+                  <h4>Communiqués et annonces</h4>
+                  <span class="chip accent">Importants</span>
+                </div>
+                <div class="card-body">
+                  <ul class="notice-list">
+                    <li>
+                      <span class="notice-tag urgent">Urgent</span>
+                      <div>
+                        <strong>Déplacement de l'horaire des examens</strong>
+                        <p>Publiée le 12 octobre 2026 • Direction des études</p>
+                      </div>
+                    </li>
+                    <li>
+                      <span class="notice-tag">Ordinaire</span>
+                      <div>
+                        <strong>Atelier de méthodologie scientifique</strong>
+                        <p>Publiée le 08 octobre 2026 • Faculté des sciences</p>
+                      </div>
+                    </li>
+                    <li>
+                      <span class="notice-tag">Ordinaire</span>
+                      <div>
+                        <strong>Ouverture du portail de documents pédagogiques</strong>
+                        <p>Publiée le 05 octobre 2026 • Service académique</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="row g-4 mb-4">
+            <div class="col-xl-5">
+              <div class="card university-card h-100" id="finances">
+                <div class="card-header">
+                  <h4>Paiements et situation financière</h4>
+                  <span class="chip">Validé</span>
+                </div>
+                <div class="card-body">
+                  <div class="finance-summary">
+                    <div><span>Total exigible</span><strong>410 000 FCFA</strong></div>
+                    <div><span>Déjà payé</span><strong>290 000 FCFA</strong></div>
+                    <div><span>Solde restant</span><strong>120 000 FCFA</strong></div>
+                  </div>
+                  <div class="payment-progress">
+                    <div class="progress-label"><span>Progression</span><strong>71%</strong></div>
+                    <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100" style="width: 71%;"></div></div>
+                  </div>
+                  <ul class="mini-list">
+                    <li><span>Référence du reçu</span><strong>PAI-2026-0837</strong></li>
+                    <li><span>Dernier paiement</span><strong>12 septembre 2026</strong></li>
+                    <li><span>Échéance suivante</span><strong>15 novembre 2026</strong></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-7" id="programme">
+              <div class="card university-card h-100">
+                <div class="card-header">
+                  <h4>Programme académique</h4>
+                  <span class="chip muted">Année 2026-2027</span>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table mb-0">
+                      <thead>
+                        <tr>
+                          <th>Semestre</th>
+                          <th>Cours</th>
+                          <th>Volume</th>
+                          <th>Crédits</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Semestre 1</td><td>Algorithmique avancée</td><td>45h</td><td>6</td></tr>
+                        <tr><td>Semestre 1</td><td>Base de données</td><td>45h</td><td>5</td></tr>
+                        <tr><td>Semestre 2</td><td>Intelligence artificielle</td><td>60h</td><td>6</td></tr>
+                        <tr><td>Semestre 2</td><td>Développement web avancé</td><td>60h</td><td>6</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="row g-4">
+            <div class="col-xl-6" id="horaires">
+              <div class="card university-card h-100">
+                <div class="card-header"><h4>Horaires des cours</h4><span class="chip">Semaine du 14/10</span></div>
+                <div class="card-body">
+                  <ul class="schedule-list">
+                    <li><span>Lundi</span><strong>Base de données</strong><em>08:30 - 10:00</em></li>
+                    <li><span>Mardi</span><strong>Réseaux</strong><em>10:15 - 11:45</em></li>
+                    <li><span>Mercredi</span><strong>Développement web</strong><em>14:00 -16:00</em></li>
+                    <li><span>Jeudi</span><strong>Mathématiques appliquées</strong><em>09:00 - 10:30</em></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6" id="recours">
+              <div class="card university-card h-100">
+                <div class="card-header"><h4>Recours et suggestions</h4><span class="chip accent">3 en cours</span></div>
+                <div class="card-body">
+                  <ul class="request-list">
+                    <li>
+                      <div><strong>Recours sur le devoir de réseaux</strong><p>Soumis le 09 octobre 2026 • En cours d'analyse</p></div>
+                      <span class="status-pill pending">En attente</span>
+                    </li>
+                    <li>
+                      <div><strong>Suggestion sur la structure de cours</strong><p>Soumise le 06 octobre 2026 • Validée</p></div>
+                      <span class="status-pill ok">Acceptée</span>
+                    </li>
+                    <li>
+                      <div><strong>Demande de consultation de relevé</strong><p>Soumise le 01 octobre 2026 • Traitée</p></div>
+                      <span class="status-pill ok">Traité</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="footer">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-sm-flex justify-content-between align-items-center">
+                <span class="text-muted">UNITECH – Système de Gestion Académique</span>
+                <span class="text-muted">Plateforme de gestion académique • version 1.0</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.location.replace('index.php');
+  </script>
+</body>
+</html>

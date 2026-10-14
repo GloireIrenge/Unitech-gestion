@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>UNITECH - Administration</title>
+  <link rel="stylesheet" href="../../assets/vendors/typicons/typicons.css">
+  <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="shortcut icon" href="../../assets/images/favicon.ico" />
+  <style>
+    :root {
+      --unitech-blue: #5d8cf4;
+      --unitech-blue-dark: #1d3968;
+      --unitech-yellow: #f4dc61;
+      --unitech-navy: #112a50;
+      --unitech-bg: #f4f7ff;
+      --unitech-card: #ffffff;
+      --unitech-text: #1d2b3a;
+      --unitech-muted: #66758c;
+      --unitech-success: #2fbf71;
+      --unitech-warning: #f5b642;
+      --unitech-danger: #ec5b5b;
+    }
+    body { background: var(--unitech-bg); color: var(--unitech-text); font-family: "Poppins", sans-serif; }
+    .container-scroller { min-height: 100vh; }
+    .navbar { background: linear-gradient(135deg, var(--unitech-blue-dark), var(--unitech-navy)); }
+    .sidebar { background: rgba(255,255,255,0.8); border-right: 1px solid rgba(29,57,104,0.08); }
+    .page-body-wrapper { padding-top: 72px; }
+    .content-wrapper { padding: 1.5rem; }
+    .page-title { font-size: 2rem; font-weight: 800; color: var(--unitech-blue-dark); margin-bottom: 1rem; }
+    .card { border: none; border-radius: 18px; box-shadow: 0 10px 24px rgba(17,42,80,0.06); }
+    .metric-card .card-body { padding: 1.3rem; }
+    .metric-card .label { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--unitech-muted); }
+    .metric-card h3 { font-size: 2rem; font-weight: 800; margin: 0.4rem 0; color: var(--unitech-blue-dark); }
+    .stat-positive { color: var(--unitech-success); }
+    .stat-warning { color: var(--unitech-warning); }
+    .table thead th { background: rgba(93,140,244,0.04); color: var(--unitech-blue-dark); font-size: 0.74rem; text-transform: uppercase; }
+    .status-pill { padding: 0.35rem 0.7rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+    .status-ok { background: rgba(47,191,113,0.12); color: var(--unitech-success); }
+    .status-warn { background: rgba(245,182,66,0.12); color: var(--unitech-warning); }
+    .chrono { display: grid; gap: 0.75rem; }
+    .chrono-item { display: flex; justify-content: space-between; padding: 0.8rem 0.9rem; border-radius: 12px; background: rgba(93,140,244,0.04); }
+    .chip { display: inline-flex; padding: 0.35rem 0.7rem; background: rgba(93,140,244,0.12); border-radius: 999px; color: var(--unitech-blue-dark); font-size: 0.72rem; font-weight: 700; }
+  </style>
+</head>
+
+<body>
+  <div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand brand-logo" href="../../index.html"><img src="../../assets/images/logo.jpg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../assets/images/logo.jpg" alt="logo" /></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize"><span class="typcn typcn-th-menu"></span></button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-date dropdown">
+            <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
+              <h6 class="date mb-0">Aujourd'hui : 14 Oct 2026</h6>
+              <i class="typcn typcn-calendar"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item"><a class="nav-link active" href="admin-dashboard.html"><i class="typcn typcn-device-desktop menu-icon"></i><span class="menu-title">Dashboard</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><i class="typcn typcn-user menu-icon"></i><span class="menu-title">Étudiants</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><i class="typcn typcn-book menu-icon"></i><span class="menu-title">Cours</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><i class="typcn typcn-credit-card menu-icon"></i><span class="menu-title">Paiements</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="../../index.html"><i class="typcn typcn-arrow-back menu-icon"></i><span class="menu-title">Retour étudiant</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="page-title">Administration UNITECH</div>
+
+          <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+              <div class="card metric-card h-100">
+                <div class="card-body">
+                  <div class="label">Étudiants</div>
+                  <h3>8,432</h3>
+                  <span class="stat-positive">+6.2% ce trimestre</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <div class="card metric-card h-100">
+                <div class="card-body">
+                  <div class="label">Enseignants</div>
+                  <h3>624</h3>
+                  <span class="stat-positive">+18 nouveaux</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <div class="card metric-card h-100">
+                <div class="card-body">
+                  <div class="label">Inscriptions</div>
+                  <h3>1,286</h3>
+                  <span class="stat-warning">82 en attente</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <div class="card metric-card h-100">
+                <div class="card-body">
+                  <div class="label">Paiements</div>
+                  <h3>91%</h3>
+                  <span class="stat-positive">Règlements validés</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-xl-8">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0" style="font-weight:800; color: var(--unitech-blue-dark);">Derniers étudiants</h4>
+                    <span class="chip">Mise à jour automatique</span>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th>Étudiant</th>
+                          <th>Faculté</th>
+                          <th>Classe</th>
+                          <th>Statut</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Amélie Ndayisaba</td>
+                          <td>Informatique</td>
+                          <td>L3 - SIA</td>
+                          <td><span class="status-pill status-ok">Actif</span></td>
+                        </tr>
+                        <tr>
+                          <td>Jean Koffi</td>
+                          <td>Marketing</td>
+                          <td>L2 - Commerce</td>
+                          <td><span class="status-pill status-ok">Actif</span></td>
+                        </tr>
+                        <tr>
+                          <td>Marie Kamanzi</td>
+                          <td>Sciences</td>
+                          <td>M1 - Chimie</td>
+                          <td><span class="status-pill status-warn">Mise à jour</span></td>
+                        </tr>
+                        <tr>
+                          <td>Patrick Mensah</td>
+                          <td>Droit</td>
+                          <td>L1 - Droit</td>
+                          <td><span class="status-pill status-ok">Actif</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h4 style="font-weight:800; color: var(--unitech-blue-dark);">Tâches prioritaires</h4>
+                  <div class="chrono mt-3">
+                    <div class="chrono-item">
+                      <span>Validation inscriptions</span>
+                      <strong>142</strong>
+                    </div>
+                    <div class="chrono-item">
+                      <span>Résultats à publier</span>
+                      <strong>26</strong>
+                    </div>
+                    <div class="chrono-item">
+                      <span>Demandes de recours</span>
+                      <strong>09</strong>
+                    </div>
+                    <div class="chrono-item">
+                      <span>Paiements non conformes</span>
+                      <strong>12</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.location.replace('admin-dashboard.php');
+  </script>
+</body>
+
+</html>
